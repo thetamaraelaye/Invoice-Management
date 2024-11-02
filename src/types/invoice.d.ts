@@ -1,4 +1,4 @@
-export interface Invoice {
+export interface InvoiceInterface {
     customerName: string;
     amount: number;
     dueDate: Date;

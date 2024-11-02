@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document, model } from 'mongoose';
-import { Invoice } from '../types/invoice';
+import { InvoiceInterface } from '../types/invoice';
 
-interface InvoiceDocument extends Invoice, Document {}
+interface InvoiceDocument extends InvoiceInterface, Document {}
 
 const InvoiceSchema = new Schema<InvoiceDocument>({
   customerName: { type: String, required: true },
