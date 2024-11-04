@@ -20,7 +20,11 @@ const InvoiceList: React.FC = () => {
     if (endDate) params.append('endDate', endDate);
 
     try {
-      const response = await fetch(`/api/invoices?${params.toString()}`);
+      const response = await fetch(`/api/invoices?${params.toString()}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        }});
       const data = await response.json();
       setInvoices(Array.isArray(data) ? data : []);
     } catch (error) {
@@ -45,7 +49,7 @@ const InvoiceList: React.FC = () => {
       <div className="flex flex-col lg:flex-row lg:justify-between mb-6 gap-4">
         <form onSubmit={handleFilterSubmit} className="flex flex-col lg:flex-row gap-4">
           <div className="space-y-2 w-full">
-            <label className="block text-gray-700">Payment Status</label>
+            <label className="block text-gray-700">Status</label>
             <select
               className="w-full p-2 border border-gray-300 rounded"
               value={paymentStatus}
@@ -79,13 +83,13 @@ const InvoiceList: React.FC = () => {
 
           <button
             type="submit"
-            className="bg-primary text-white px-4 py-2 rounded hover:bg-secondary w-full lg:w-auto"
+            className="bg-primary text-white px-4 text-xs py-2 rounded hover:bg-secondary w-full lg:w-full"
           >
             Apply Filter(s)
           </button>
         </form>
 
-        <button onClick={() => window.location.href = '/invoices/new'} className="bg-primary text-white px-4 py-2 rounded hover:bg-secondary w-full lg:w-auto">
+        <button onClick={() => window.location.href = '/invoices/new'} className="bg-primary text-white text-xs px-4 py-2 rounded hover:bg-secondary w-full lg:w-auto">
           Add New
         </button>
       </div>
@@ -103,7 +107,7 @@ const InvoiceList: React.FC = () => {
           </thead>
           <tbody>
             {invoices.map((invoice: any) => (
-              <tr key={invoice._id} className="text-center">
+              <tr key={invoice._id} className="text-center" onClick={() => window.location.href = `/invoices/${invoice._id}`}>
                 <td className="p-2 border-b">{new Date(invoice.createdAt).toLocaleDateString()}</td>
                 <td className="p-2 border-b">{invoice.customerName}</td>
                 <td className="p-2 border-b">{invoice.amount}</td>
