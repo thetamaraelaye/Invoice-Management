@@ -12,43 +12,38 @@ const CreateInvoice: React.FC = () => {
   const [dueDate, setDueDate] = useState("");
   const [paymentStatus, setPaymentStatus] = useState("Unpaid");
   const [files, setFiles] = useState<File[]>([]);
-  const [fileUrls, setFileUrls] = useState<string[]>([]);
+  const [alert, setAlert] = useState<{
+    type: "success" | "error" | "info";
+    message: string;
+  } | null>(null);
+  const [dragActive, setDragActive] = useState(false);
   const router = useRouter();
 
-  const [DragEvent, setDragEvent] = useState(false);
-
-  const [dragActive, setDragActive] = useState(false);
-
   const truncateFileName = (name: string, maxLength: number) => {
-    if (name.length > maxLength) {
-      return name.substring(0, maxLength) + "...";
-    }
-    return name;
+    return name.length > maxLength
+      ? name.substring(0, maxLength) + "..."
+      : name;
   };
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    event.stopPropagation();
     setDragActive(true);
   };
 
   const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    event.stopPropagation();
     setDragActive(false);
   };
 
   const handleRemoveFile = (index: number) => {
     setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
-  
 
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    event.stopPropagation();
     setDragActive(false);
     const droppedFile = event.dataTransfer.files?.[0];
-    if (droppedFile) {
+        if (droppedFile) {
       const fileType = droppedFile.name.split(".").pop();
       if (
         fileType === "pdf" ||
@@ -61,62 +56,67 @@ const CreateInvoice: React.FC = () => {
       ) {
         setFiles([...files, droppedFile]);
       } else {
-        alert("Only pdf, docx, png, jpg, jpeg, txt files are allowed");
+        setAlert({ message: "Only pdf, docx, png, jpg, jpeg, txt files are allowed", type: "error"});
       }
     }
-  };
-  const [loading, setLoading] = useState(false);
-  const handleClearFile = () => {
-    setFiles([]);
+    handleFileUpload(droppedFile);
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
-      setFiles(Array.from(event.target.files)); // Store selected files in state
+      handleFileUpload(event.target.files[0]);
+    }
+  };
+
+  const handleFileUpload = (file: File) => {
+    const allowedFileTypes = ["pdf", "docx", "png", "jpg", "jpeg", "txt"];
+    const fileType = file.name.split(".").pop()?.toLowerCase();
+
+    if (fileType && allowedFileTypes.includes(fileType)) {
+      setFiles((prevFiles) => [...prevFiles, file]);
+    } else {
+      setAlert({
+        type: "error",
+        message: "Only PDF, DOCX, PNG, JPG, JPEG, and TXT files are allowed",
+      });
     }
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    // You might implement a separate upload API to handle file uploads
-    const uploadedFileUrls = await Promise.all(
-      files.map(async (file) => {
-        const formData = new FormData();
-        formData.append("file", file);
-
-        const response = await fetch("/api/invoices", {
-          method: "POST",
-          body: formData,
-        });
-
-        const data = await response.json();
-        return data.url; // Assuming the API returns the URL of the uploaded file
-      })
-    );
-
-    const invoiceData = {
-      customerName,
-      amount: Number(amount),
-      dueDate,
-      paymentStatus,
-      files: uploadedFileUrls,
-    };
+    //  const formData = new FormData();
+    //  formData.append("customerName", customerName);
+    //  formData.append("amount", amount.toString());
+    //  formData.append("dueDate", dueDate);
+    //  formData.append("paymentStatus", paymentStatus);
+    //  files.forEach((file) => formData.append("files", file));
 
     try {
       const response = await fetch("/api/invoices", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(invoiceData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          customerName,
+          amount,
+          dueDate,
+          paymentStatus,
+        }),
       });
 
       if (response.ok) {
+        setAlert({
+          type: "success",
+          message: "Invoice created successfully!",
+        });
         router.push("/invoices");
       } else {
-        console.error("Failed to create invoice");
+        throw new Error("Failed to create invoice");
       }
     } catch (error) {
-      console.error("Error creating invoice:", error);
+      setAlert({ type: "error", message: "Error creating invoice: " + error });
     }
   };
 
@@ -125,7 +125,17 @@ const CreateInvoice: React.FC = () => {
       <h1 className="text-2xl font-bold text-primary mb-6">
         Create New Invoice
       </h1>
+
+      {alert && (
+        <Alert
+          type={alert.type}
+          message={alert.message}
+          onClose={() => setAlert(null)}
+        />
+      )}
+
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Form fields */}
         <div>
           <label className="block text-gray-700">Customer Name</label>
           <input
@@ -171,53 +181,43 @@ const CreateInvoice: React.FC = () => {
           </select>
         </div>
 
+        {/* File upload */}
         <>
-          <div
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-            className="bg-[#F6F7F6] border border-[#E1E6E1] rounded-lg flex justify-center lg:w-1/2 p-2"
-          >
-            <div className="">
-              <div className="flex justify-center">
-                <div className="bg-[#F6F7F6] border border-[#E1E6E1] w-[56px] h-[56px] rounded-full flex justify-center items-center">
-                  <Image
-                    src={attach_icon}
-                    alt="attach"
-                    width={24}
-                    height={24}
-                  />
-                </div>
-              </div>
-
-              <div className="mt-2 flex justify-center">
-                <p className="text-[#344335] text-sm">
-                  {dragActive
-                    ? "Release to upload the file"
-                    : "Choose a file or drag and drop the file here"}
-                </p>
-              </div>
-
-              {!files && (
-                <div className="flex justify-center mt-4">
-                  <label
-                    htmlFor="file-upload"
-                    className="bg-[#2B8C34] disabled:bg-[#ABB6AC] hover:bg-opacity-[0.9] transition-all rounded-lg flex gap-2 items-center text-[#FFFFFF] py-3 px-5 text-sm font-medium cursor-pointer"
-                  >
-                    Choose File
-                    <input
-                      type="file"
-                      name="file-upload"
-                      onChange={handleFileChange}
-                      multiple
-                      className=""
-                      accept=".csv, .pdf, .png, .jpj, .jpeg, .docx" // Only accept CSV and Excel formats
-                    />
-                  </label>
-                </div>
-              )}
-
-              {files.length > 0 && (
+        <div
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          className="bg-[#F6F7F6] border border-[#E1E6E1] rounded-lg flex justify-center lg:w-1/2 p-2"
+        >
+          <div className="flex flex-col items-center">
+            <div className="bg-[#F6F7F6] border border-[#E1E6E1] w-[56px] h-[56px] rounded-full flex justify-center items-center">
+              <Image src={attach_icon} alt="attach" width={24} height={24} />
+            </div>
+            <p className="text-[#344335] text-sm mt-2">
+              {dragActive
+                ? "Release to upload the file"
+                : "Choose or drag and drop a file here"}
+            </p>
+            {files.length === 0 && (
+              <>
+                {" "}
+                <input
+                  type="file"
+                  onChange={handleFileChange}
+                  multiple
+                  accept=".csv, .pdf, .png, .jpg, .jpeg, .docx"
+                  className="hidden"
+                  id="file-upload"
+                />
+                <label
+                  htmlFor="file-upload"
+                  className="bg-primary text-white py-2 px-4 rounded mt-3 cursor-pointer"
+                >
+                  Choose File
+                </label>
+              </>
+            )}
+             {files.length > 0 && (
                 <div className="border mt-3 min-w-[320px] border-[#E1E6E1] flex flex-col bg-white rounded-lg py-3 px-3">
                   {files.map((file, index) => (
                     <div key={index} className="flex gap-2 mb-2">
@@ -238,9 +238,9 @@ const CreateInvoice: React.FC = () => {
                     </div>
                   ))}
                 </div>
-              )}
-            </div>
+             )}
           </div>
+        </div>
         </>
 
         <button
