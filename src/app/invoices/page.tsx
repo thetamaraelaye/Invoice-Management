@@ -109,9 +109,9 @@ const InvoiceList: React.FC = () => {
             {invoices.map((invoice: any) => (
               <tr key={invoice._id} className="text-center" onClick={() => window.location.href = `/invoices/${invoice._id}`}>
                 <td className="p-2 border-b">{new Date(invoice.createdAt).toLocaleDateString()}</td>
-                <td className="p-2 border-b">{invoice.customerName}</td>
-                <td className="p-2 border-b">{invoice.amount}</td>
-                <td className="p-2 border-b">{new Date(invoice.dueDate).toLocaleDateString()}</td>
+                <td className="p-2 border-b">{invoice?.customerName}</td>
+                <td className="p-2 border-b">{invoice?.amount}</td>
+                <td className="p-2 border-b">{new Date(invoice?.dueDate).toLocaleDateString()}</td>
                 <td className="p-2 border-b">{invoice.paymentStatus}</td>
               </tr>
             ))}
