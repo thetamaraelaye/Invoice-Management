@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Sales Invoice Management Application
 
-## Getting Started
+### Overview
+This is a full-stack web application designed to efficiently manage sales invoices. It allows users to create, read, update, delete, and filter invoices, as well as upload and manage related files.
 
-First, run the development server:
+### Technologies Used
+* **Frontend:**
+  * React
+  * TypeScript
+  * Tailwind CSS
+* **Backend:**
+  * Next.js
+* **Package Manager:**
+  * npm
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Installation and Setup
+1. **Clone the Repository:**
+   ```bash
+   git clone https://github.com/thetamaraelaye/Invoice-Management
+   ```
+2. **Install Dependencies:**
+   ```bash
+   cd Invoice-Management
+   npm install
+   ```
+3. **Start the Development Server:**
+   ```bash
+   npm run dev
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Usage
+1. **Create a New Invoice:**
+   * Click the "Create Invoice" button.
+   * Fill in the required details, including customer information, items, quantities, prices, and taxes.
+   * Upload any relevant files.
+   * Click "Create" to create the invoice.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2. **View Invoices:**
+   * The main page displays a list of existing invoices.
+   * Use the filters to narrow down the list by date range and payment status.
+   * Click on an invoice to view its details, including items, total amount, and uploaded files.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+3. **Edit an Invoice:**
+   * Click the "Edit" button on an invoice.
+   * Make necessary changes to the invoice details and files.
+   * Click "Save" to update the invoice.
 
-## Learn More
+4. **Delete an Invoice:**
+   * Click the "Delete" button on an invoice.
+   * Confirm the deletion.
 
-To learn more about Next.js, take a look at the following resources:
+### Contributing
+We welcome contributions to improve this application. Please feel free to fork the repository and submit pull requests.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### License
+This project is licensed under the MIT License.
