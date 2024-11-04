@@ -1,9 +1,10 @@
 // pages/invoices/[id].tsx
+"use client"
 import React, { useState } from "react";
 import EditModal from "@/components/editmodal";
 import DeleteModal from "@/components/deletemodal";
 
-const InvoiceDetailPage = ({ invoice }: {invoice: any}) => {
+const InvoiceDetailPage = ({ invoice }: any) => {
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
 

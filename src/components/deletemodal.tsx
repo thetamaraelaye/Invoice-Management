@@ -1,4 +1,5 @@
 // components/DeleteModal.tsx
+"use client"
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment } from "react";
 
