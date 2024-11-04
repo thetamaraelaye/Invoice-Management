@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import dbConnect from "@/lib/db";
-import Invoice from "@/model/invoice";
+import dbConnect from '../../../../lib/db';
+import Invoice from '../../../../model/invoice';
 
 // GET: Fetch single invoice
 export async function GET(
