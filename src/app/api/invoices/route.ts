@@ -5,8 +5,9 @@ import Invoice from '@/model/invoice';
 
 //route to get all invoices
 export async function GET(request: Request) {
+    await dbConnect();
     try {
-        await dbConnect();
+        
         const { searchParams } = new URL(request.url);
 
         // Extract filter parameters
@@ -37,6 +38,7 @@ export async function GET(request: Request) {
         const invoices = await Invoice.find(filter);
         return NextResponse.json(invoices, { status: 200 });
     } catch (error) {
+        console.log('Error fetching invoices:', error)
         return NextResponse.json({ error: 'Failed to fetch invoices' }, { status: 500 });
     }
 }
