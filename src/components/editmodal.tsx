@@ -16,9 +16,9 @@ const EditModal: React.FC<EditModalProps> = ({
   invoiceData,
   onSave,
 }) => {
-  const [customerName, setCustomerName] = useState(invoiceData.customerName);
-  const [amount, setAmount] = useState(invoiceData.amount);
-  const [dueDate, setDueDate] = useState(invoiceData.dueDate);
+  const [customerName, setCustomerName] = useState(invoiceData?.customerName);
+  const [amount, setAmount] = useState(invoiceData?.amount);
+  const [dueDate, setDueDate] = useState(invoiceData?.dueDate);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
