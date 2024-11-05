@@ -38,7 +38,7 @@ const EditModal: React.FC<EditModalProps> = ({
                 onSubmit={handleSubmit}
                 className="space-y-4 flex flex-col p-4"
               >
-                <div>
+                <div className="flex flex-col space-y-2">
                   <label
                     htmlFor={customerName}
                     className="text-sm font-medium text-gray-600"
@@ -54,7 +54,7 @@ const EditModal: React.FC<EditModalProps> = ({
                     className="w-full rounded-lg border border-gray-200 bg-gray-100 px-3 py-3 text-sm ring-0 focus:outline-none"
                   />
                 </div>
-                <div>
+                <div className="flex flex-col space-y-2">
                   <label
                     htmlFor={amount}
                     className="text-sm font-medium text-gray-600"
@@ -66,10 +66,11 @@ const EditModal: React.FC<EditModalProps> = ({
                     value={amount}
                     onChange={(e) => setAmount(Number(e.target.value))}
                     placeholder="Amount"
+                    className="w-full rounded-lg border border-gray-200 bg-gray-100 px-3 py-3 text-sm ring-0 focus:outline-none"
                     required
                   />
                 </div>
-                <div>
+                <div className="flex flex-col space-y-2">
                   <label
                     htmlFor={dueDate}
                     className="text-sm font-medium text-gray-600"
@@ -80,10 +81,12 @@ const EditModal: React.FC<EditModalProps> = ({
                     type="date"
                     value={dueDate}
                     onChange={(e) => setDueDate(e.target.value)}
+                    placeholder="Enter Date"
+                    className="w-full rounded-lg border border-gray-200 bg-gray-100 px-3 py-3 text-sm ring-0 focus:outline-none"
                     required
                   />
                 </div>
-                <button type="submit" className="bg-primary hover:bg-primary-dark focus:bg-primary text-white font-semibold rounded-lg transition-colors duration-300 py-2 px-3 text-right">Save</button>
+                <button type="submit" className="bg-primary text-center hover:bg-primary-dark focus:bg-primary text-white font-semibold rounded-lg transition-colors duration-300 py-2 px-3">Save</button>
               </form>
             </DialogPanel>
           </div>
