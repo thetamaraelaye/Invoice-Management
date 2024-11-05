@@ -83,13 +83,13 @@ const InvoiceList: React.FC = () => {
 
           <button
             type="submit"
-            className="bg-primary text-white px-4 text-xs py-2 rounded hover:bg-secondary w-full lg:w-full"
+            className="bg-primary lg:h-[44px] lg:mt-8  text-white px-4 text-xs py-2 rounded hover:bg-secondary w-full lg:w-full"
           >
             Apply Filter(s)
           </button>
         </form>
 
-        <button onClick={() => window.location.href = '/invoices/new'} className="bg-primary text-white text-xs px-4 py-2 rounded hover:bg-secondary w-full lg:w-auto">
+        <button onClick={() => window.location.href = '/invoices/new'} className="bg-primary lg:h-[44px] lg:mt-8 text-white text-xs px-4 py-2 rounded hover:bg-secondary w-full lg:w-auto">
           Add New
         </button>
       </div>
