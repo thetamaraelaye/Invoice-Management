@@ -30,9 +30,6 @@ const EditModal: React.FC<EditModalProps> = ({
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={closeModal}>
-        <Transition as={Fragment}>
-          <div className="fixed inset-0 bg-black bg-opacity-25" />
-        </Transition>
         <div className="fixed inset-0 overflow-y-auto">
           <div className="flex items-center justify-center min-h-full">
             <DialogPanel className="w-full max-w-md p-6 bg-white rounded">
